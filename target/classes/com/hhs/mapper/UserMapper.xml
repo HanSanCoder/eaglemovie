@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhs.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.hhs.entity.User">
+    <id column="user_id" jdbcType="BIGINT" property="user_id" />
+    <result column="user_name" jdbcType="VARCHAR" property="user_name" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="user_pwd" />
+    <result column="user_email" jdbcType="VARCHAR" property="user_email" />
+    <result column="user_role" jdbcType="INTEGER" property="user_role" />
+    <result column="user_headImg" jdbcType="VARCHAR" property="user_headImg" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, user_name, user_pwd, user_email, user_role, user_headImg
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+    <select id="selectByUserPwd" resultType="com.hhs.entity.User">
+      select
+      <include refid="Base_Column_List" />
+      from user
+      where user_pwd = #{password} and user_name = #{username}
+    </select>
+
+  <select id="selectByUserName" resultType="com.hhs.entity.User">
+    select *
+    from user
+    where user_name = #{username}
+  </select>
+  <select id="findAllUser" resultType="com.hhs.entity.User">
+    select *
+    from user
+  </select>
+
+  <select id="findUserByLikeName" resultType="com.hhs.entity.User">
+    select *
+    from user
+    where user_name like '%${keyword}%'
+  </select>
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hhs.entity.User">
+    insert into user (user_id, user_name, user_pwd, 
+      user_email, user_role, user_headImg
+      )
+    values (#{userId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{userEmail,jdbcType=VARCHAR}, #{userRole,jdbcType=INTEGER}, #{userHeadimg,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhs.entity.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="user_id != null">
+        user_id,
+      </if>
+      <if test="user_name != null">
+        user_name,
+      </if>
+      <if test="user_pwd != null">
+        user_pwd,
+      </if>
+      <if test="user_email != null">
+        user_email,
+      </if>
+      <if test="user_role != null">
+        user_role,
+      </if>
+      <if test="user_headImg != null">
+        user_headImg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="user_id != null">
+        #{user_id,jdbcType=BIGINT},
+      </if>
+      <if test="user_name != null">
+        #{user_name,jdbcType=VARCHAR},
+      </if>
+      <if test="user_pwd != null">
+        #{user_pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="user_email != null">
+        #{user_email,jdbcType=VARCHAR},
+      </if>
+      <if test="user_role != null">
+        #{user_role,jdbcType=INTEGER},
+      </if>
+      <if test="userHeadimg != null">
+        #{user_headImg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhs.entity.User">
+    update user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userEmail != null">
+        user_email = #{userEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="userRole != null">
+        user_role = #{userRole,jdbcType=INTEGER},
+      </if>
+      <if test="userHeadimg != null">
+        user_headImg = #{userHeadimg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhs.entity.User">
+    update user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_email = #{userEmail,jdbcType=VARCHAR},
+      user_role = #{userRole,jdbcType=INTEGER},
+      user_headImg = #{userHeadimg,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

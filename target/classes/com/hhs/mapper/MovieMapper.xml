@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhs.mapper.MovieMapper">
+  <resultMap id="BaseResultMap" type="com.hhs.entity.Movie">
+    <id column="movie_id" jdbcType="BIGINT" property="movie_id" />
+    <result column="movie_cn_name" jdbcType="VARCHAR" property="movie_cn_name" />
+    <result column="movie_fg_name" jdbcType="VARCHAR" property="movie_fg_name" />
+    <result column="movie_actor" jdbcType="VARCHAR" property="movie_actor" />
+    <result column="movie_director" jdbcType="VARCHAR" property="movie_director" />
+    <result column="movie_detail" jdbcType="VARCHAR" property="movie_detail" />
+    <result column="movie_duration" jdbcType="VARCHAR" property="movie_duration" />
+    <result column="movie_type" jdbcType="VARCHAR" property="movie_type" />
+    <result column="movie_score" jdbcType="REAL" property="movie_score" />
+    <result column="movie_boxOffice" jdbcType="REAL" property="movie_boxOffice" />
+    <result column="movie_commentCount" jdbcType="BIGINT" property="movie_commentCount" />
+    <result column="movie_releaseDate" jdbcType="DATE" property="movie_releaseDate" />
+    <result column="movie_country" jdbcType="VARCHAR" property="movie_country" />
+    <result column="movie_picture" jdbcType="VARCHAR" property="movie_picture" />
+    <result column="movie_state" jdbcType="INTEGER" property="movie_state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    movie_id, movie_cn_name, movie_fg_name, movie_actor, movie_director, movie_detail, 
+    movie_duration, movie_type, movie_score, movie_boxOffice, movie_commentCount, movie_releaseDate, 
+    movie_country, movie_picture, movie_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from movie
+    where movie_id = #{movieId,jdbcType=BIGINT}
+  </select>
+
+    <select id="findMoviesByName" resultType="com.hhs.entity.Movie">
+        select *
+        from movie
+        where movie_name like '%${name}%'
+    </select>
+
+  <select id="findMovieLikeType" resultType="com.hhs.entity.Movie">
+    select *
+    from movie
+    where movie_type like '%${type}%'
+  </select>
+  <select id="findMovieByDate" resultType="com.hhs.entity.Movie">
+    select *
+    from movie
+    where movie_state = 1
+    order by movie_releaseDate DESC
+  </select>
+
+  <select id="findMovieByCount" resultType="com.hhs.entity.Movie">
+    select *
+    from movie
+    where movie_state = 1
+    order by movie_commentCount DESC
+  </select>
+
+  <select id="findMovieByScore" resultType="com.hhs.entity.Movie">
+    select *
+    from movie
+    where movie_state = 1
+    order by movie_Score DESC
+  </select>
+  <select id="findAllMovie" resultType="com.hhs.entity.Movie">
+    select *
+    from movie
+    where movie_state = #{movie_state}
+  </select>
+  <select id="sortMovieByBoxOffice" resultType="com.hhs.entity.Movie">
+    select * from movie where movie_state = 1 order by movie_boxOffice desc
+  </select>
+  <select id="findMovieByName" resultType="com.hhs.entity.Movie">
+    select *
+    from movie
+    where movie_name = #{movie_name}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from movie
+    where movie_id = #{movieId,jdbcType=BIGINT}
+  </delete>
+  <update id="deleteMovieCommentCount" parameterType="long">
+    update movie set movie_commentCount = movie_commentCount -1 where movie_id = #{movie_id}
+  </update>
+  <insert id="insert" parameterType="com.hhs.entity.Movie">
+    insert into movie (movie_id, movie_cn_name, movie_fg_name, 
+      movie_actor, movie_director, movie_detail, 
+      movie_duration, movie_type, movie_score, 
+      movie_boxOffice, movie_commentCount, movie_releaseDate, 
+      movie_country, movie_picture, movie_state
+      )
+    values (#{movieId,jdbcType=BIGINT}, #{movieCnName,jdbcType=VARCHAR}, #{movieFgName,jdbcType=VARCHAR}, 
+      #{movieActor,jdbcType=VARCHAR}, #{movieDirector,jdbcType=VARCHAR}, #{movieDetail,jdbcType=VARCHAR}, 
+      #{movieDuration,jdbcType=VARCHAR}, #{movieType,jdbcType=VARCHAR}, #{movieScore,jdbcType=REAL}, 
+      #{movieBoxoffice,jdbcType=REAL}, #{movieCommentcount,jdbcType=BIGINT}, #{movieReleasedate,jdbcType=DATE}, 
+      #{movieCountry,jdbcType=VARCHAR}, #{moviePicture,jdbcType=VARCHAR}, #{movieState,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhs.entity.Movie">
+    insert into movie
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="movie_id != null">
+        movie_id,
+      </if>
+      <if test="movie_cn_name != null">
+        movie_cn_name,
+      </if>
+      <if test="movie_fg_name != null">
+        movie_fg_name,
+      </if>
+      <if test="movie_actor != null">
+        movie_actor,
+      </if>
+      <if test="movie_director != null">
+        movie_director,
+      </if>
+      <if test="movie_detail != null">
+        movie_detail,
+      </if>
+      <if test="movie_duration != null">
+        movie_duration,
+      </if>
+      <if test="movie_type != null">
+        movie_type,
+      </if>
+      <if test="movie_score != null">
+        movie_score,
+      </if>
+      <if test="movie_boxOffice != null">
+        movie_boxOffice,
+      </if>
+      <if test="movie_commentCount != null">
+        movie_commentCount,
+      </if>
+      <if test="movie_releaseDate != null">
+        movie_releaseDate,
+      </if>
+      <if test="movie_country != null">
+        movie_country,
+      </if>
+      <if test="movie_picture != null">
+        movie_picture,
+      </if>
+      <if test="movie_state != null">
+        movie_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="movie_id != null">
+        #{movie_id,jdbcType=BIGINT},
+      </if>
+      <if test="movie_cn_name != null">
+        #{movie_cn_name,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_fg_name != null">
+        #{movie_fg_name,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_actor != null">
+        #{movie_actor,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_director != null">
+        #{movie_director,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_detail != null">
+        #{movie_detail,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_duration != null">
+        #{movie_duration,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_type != null">
+        #{movie_type,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_score != null">
+        #{movie_score,jdbcType=REAL},
+      </if>
+      <if test="movie_boxOffice != null">
+        #{movie_boxOffice,jdbcType=REAL},
+      </if>
+      <if test="movie_commentCount != null">
+        #{movie_commentCount,jdbcType=BIGINT},
+      </if>
+      <if test="movie_releaseDate != null">
+        #{movie_releaseDate,jdbcType=DATE},
+      </if>
+      <if test="movie_country != null">
+        #{movie_country,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_picture != null">
+        #{movie_picture,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_state != null">
+        #{movie_state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="addMovieCommentCount" parameterType="long">
+    update movie set movie_commentCount = movie_commentCount +1 where movie_id = #{movie_id}
+  </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hhs.entity.Movie">
+    update movie
+    <set>
+      <if test="movieCnName != null">
+        movie_cn_name = #{movieCnName,jdbcType=VARCHAR},
+      </if>
+      <if test="movieFgName != null">
+        movie_fg_name = #{movieFgName,jdbcType=VARCHAR},
+      </if>
+      <if test="movieActor != null">
+        movie_actor = #{movieActor,jdbcType=VARCHAR},
+      </if>
+      <if test="movieDirector != null">
+        movie_director = #{movieDirector,jdbcType=VARCHAR},
+      </if>
+      <if test="movieDetail != null">
+        movie_detail = #{movieDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="movieDuration != null">
+        movie_duration = #{movieDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="movieType != null">
+        movie_type = #{movieType,jdbcType=VARCHAR},
+      </if>
+      <if test="movieScore != null">
+        movie_score = #{movieScore,jdbcType=REAL},
+      </if>
+      <if test="movieBoxoffice != null">
+        movie_boxOffice = #{movieBoxoffice,jdbcType=REAL},
+      </if>
+      <if test="movieCommentcount != null">
+        movie_commentCount = #{movieCommentcount,jdbcType=BIGINT},
+      </if>
+      <if test="movieReleasedate != null">
+        movie_releaseDate = #{movieReleasedate,jdbcType=DATE},
+      </if>
+      <if test="movieCountry != null">
+        movie_country = #{movieCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="moviePicture != null">
+        movie_picture = #{moviePicture,jdbcType=VARCHAR},
+      </if>
+      <if test="movieState != null">
+        movie_state = #{movieState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where movie_id = #{movieId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhs.entity.Movie">
+    update movie
+    set movie_cn_name = #{movieCnName,jdbcType=VARCHAR},
+      movie_fg_name = #{movieFgName,jdbcType=VARCHAR},
+      movie_actor = #{movieActor,jdbcType=VARCHAR},
+      movie_director = #{movieDirector,jdbcType=VARCHAR},
+      movie_detail = #{movieDetail,jdbcType=VARCHAR},
+      movie_duration = #{movieDuration,jdbcType=VARCHAR},
+      movie_type = #{movieType,jdbcType=VARCHAR},
+      movie_score = #{movieScore,jdbcType=REAL},
+      movie_boxOffice = #{movieBoxoffice,jdbcType=REAL},
+      movie_commentCount = #{movieCommentcount,jdbcType=BIGINT},
+      movie_releaseDate = #{movieReleasedate,jdbcType=DATE},
+      movie_country = #{movieCountry,jdbcType=VARCHAR},
+      movie_picture = #{moviePicture,jdbcType=VARCHAR},
+      movie_state = #{movieState,jdbcType=INTEGER}
+    where movie_id = #{movieId,jdbcType=BIGINT}
+  </update>
+    <update id="changeMovieBoxOffice">
+      update movie set movie_boxOffice = movie_boxOffice + #{movie_boxOffice} where movie_id = #{movie_id}
+    </update>
+</mapper>

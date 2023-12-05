@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhs.mapper.ScheduleMapper">
+  <resultMap id="BaseResultMap" type="com.hhs.entity.Schedule">
+    <id column="schedule_id" jdbcType="BIGINT" property="schedule_id" />
+    <result column="hall_id" jdbcType="BIGINT" property="hall_id" />
+    <result column="movie_id" jdbcType="BIGINT" property="movie_id" />
+    <result column="schedule_startTime" jdbcType="VARCHAR" property="schedule_startTime" />
+    <result column="schedule_price" jdbcType="INTEGER" property="schedule_price" />
+    <result column="schedule_remain" jdbcType="INTEGER" property="schedule_remain" />
+    <result column="schedule_state" jdbcType="INTEGER" property="schedule_state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    schedule_id, hall_id, movie_id, schedule_startTime, schedule_price, schedule_remain, 
+    schedule_state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where schedule_id = #{scheduleId,jdbcType=BIGINT}
+  </select>
+    <select id="findAllScheduleByState" resultType="com.hhs.entity.Schedule">
+      select *
+      from schedule
+      where schedule_state = #{schedule_state}
+    </select>
+  <select id="findAllSchedule" resultType="com.hhs.entity.Schedule">
+        select * from schedule
+  </select>
+  <select id="findScheduleByMovieName" resultType="com.hhs.entity.Schedule">
+    select schedule.*
+    from movie, schedule
+    where schedule.movie_id = movie.movie_id and schedule.schedule_state = 1and and movie_name = #{movie_name}
+  </select>
+  <select id="findOffScheduleByMovieName" resultType="com.hhs.entity.Schedule">
+    select schedule.*
+    from movie, schedule
+    where schedule.movie_id = movie.movie_id and schedule.schedule_state = 1and and movie_name = #{movie_name}
+  </select>
+  <select id="findScheduleByCinemaAndMovie" resultType="com.hhs.entity.Schedule">
+    select schedule.*
+    from schedule,hall
+    where schedule.hall_id=hall.hall_id
+    and hall.cinema_id = #{cinema_id} and movie_id = #{movie_id} and schedule_state = 1
+  </select>
+  <select id="findScheduleByCinemaAndMovieAndHall" resultType="com.hhs.entity.Schedule">
+    select schedule.*
+    from schedule,hall
+    where schedule.hall_id=hall.hall_id
+    and hall.cinema_id = #{cinema_id} and movie_id = #{movie_id} and schedule.hall_id = #{hall_id} and schedule_state = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from schedule
+    where schedule_id = #{scheduleId,jdbcType=BIGINT}
+  </delete>
+  <update id="delScheduleRemain" parameterType="long">
+    update schedule set schedule_remain = schedule_remain - 1 where schedule_id = #{schedule_id}
+  </update>
+    <insert id="insert" parameterType="com.hhs.entity.Schedule">
+    insert into schedule (schedule_id, hall_id, movie_id, 
+      schedule_startTime, schedule_price, schedule_remain, 
+      schedule_state)
+    values (#{scheduleId,jdbcType=BIGINT}, #{hallId,jdbcType=BIGINT}, #{movieId,jdbcType=BIGINT}, 
+      #{scheduleStarttime,jdbcType=VARCHAR}, #{schedulePrice,jdbcType=INTEGER}, #{scheduleRemain,jdbcType=INTEGER}, 
+      #{scheduleState,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhs.entity.Schedule">
+    insert into schedule
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="schedule_id != null">
+        schedule_id,
+      </if>
+      <if test="hall_id != null">
+        hall_id,
+      </if>
+      <if test="movie_id != null">
+        movie_id,
+      </if>
+      <if test="schedule_startTime != null">
+        schedule_startTime,
+      </if>
+      <if test="schedule_price != null">
+        schedule_price,
+      </if>
+      <if test="schedule_remain != null">
+        schedule_remain,
+      </if>
+      <if test="schedule_state != null">
+        schedule_state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scheduleId != null">
+        #{scheduleId,jdbcType=BIGINT},
+      </if>
+      <if test="hall_id != null">
+        #{hall_id,jdbcType=BIGINT},
+      </if>
+      <if test="movie_id != null">
+        #{movie_id,jdbcType=BIGINT},
+      </if>
+      <if test="schedule_startTime != null">
+        #{schedule_startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="schedule_price != null">
+        #{schedule_price,jdbcType=INTEGER},
+      </if>
+      <if test="schedule_remain != null">
+        #{schedule_remain,jdbcType=INTEGER},
+      </if>
+      <if test="schedule_state != null">
+        #{schedule_state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhs.entity.Schedule">
+    update schedule
+    <set>
+      <if test="hallId != null">
+        hall_id = #{hallId,jdbcType=BIGINT},
+      </if>
+      <if test="movieId != null">
+        movie_id = #{movieId,jdbcType=BIGINT},
+      </if>
+      <if test="scheduleStarttime != null">
+        schedule_startTime = #{scheduleStarttime,jdbcType=VARCHAR},
+      </if>
+      <if test="schedulePrice != null">
+        schedule_price = #{schedulePrice,jdbcType=INTEGER},
+      </if>
+      <if test="scheduleRemain != null">
+        schedule_remain = #{scheduleRemain,jdbcType=INTEGER},
+      </if>
+      <if test="scheduleState != null">
+        schedule_state = #{scheduleState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where schedule_id = #{scheduleId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhs.entity.Schedule">
+    update schedule
+    set hall_id = #{hallId,jdbcType=BIGINT},
+      movie_id = #{movieId,jdbcType=BIGINT},
+      schedule_startTime = #{scheduleStarttime,jdbcType=VARCHAR},
+      schedule_price = #{schedulePrice,jdbcType=INTEGER},
+      schedule_remain = #{scheduleRemain,jdbcType=INTEGER},
+      schedule_state = #{scheduleState,jdbcType=INTEGER}
+    where schedule_id = #{scheduleId,jdbcType=BIGINT}
+  </update>
+</mapper>

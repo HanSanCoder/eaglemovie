@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <!-- <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.css"> -->
+    <script src="js/jquery-3.7.1.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="layui/layui.js"></script>
+
+    <link rel="icon" type="image/x-icon" href="images/logo.ico" />
+    <link rel="stylesheet" href="static/css/header.css">
+    <script src="js/header.js"></script>
+    <title>鹰眼电影</title>
+</head>
+
+<body>
+<div th:fragment="header">
+    <!-- 导航栏 -->
+    <div class="header navbar navbar-fixed-top">
+        <div class="header-top">
+            <div class="header-inner">
+                <h1>
+                    <a href="javascript:void(0)" class="logo"></a>
+                </h1>
+                <div class="nav">
+                    <ul>
+                        <li><a href="./mainPage">首页</a></li>
+                        <li class="active"><a href="./movieList">电影</a></li>
+                        <li><a href="javascript:void(0)">影院</a></li>
+                        <li><a href="javascript:void(0)">榜单</a></li>
+                    </ul>
+                </div>
+                <div class="app-download">
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar J-login">
+                        <ul class="layui-nav" style="background-color: #fff;">
+                            <li class="layui-nav-item header-li" style="width:40px;" lay-unselect="">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <form action="">
+                    <input name="searchMovie" class="search" type="search" maxlength="32" placeholder="找影视剧、影人、影院"
+                        autocomplete="off">
+                    <input class="submit" type="submit" value="">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var clientHeight = document.documentElement.clientHeight;
+        window.onload = function () {
+            initHeader();
+        }
+    </script>
+</div>
+</body>
+
+</html>

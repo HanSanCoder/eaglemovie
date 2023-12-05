@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework:spring-test:6.0.14">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../apache/apache-maven-3.9.1/mav_repository/org/springframework/spring-test/6.0.14/spring-test-6.0.14.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../apache/apache-maven-3.9.1/mav_repository/org/springframework/spring-test/6.0.14/spring-test-6.0.14-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../apache/apache-maven-3.9.1/mav_repository/org/springframework/spring-test/6.0.14/spring-test-6.0.14-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

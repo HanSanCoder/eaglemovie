@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.6</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.hhs</groupId>
+    <artifactId>Eaglemovie</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Eaglemovie</name>
+    <description>Eaglemovie</description>
+    <properties>
+        <java.version>17</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <!--json数据-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.51</version>
+        </dependency>
+        <!--分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.4.6</version>
+        </dependency>
+
+        <!--数据池druid-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter-test</artifactId>
+            <version>3.0.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!--<resources>-->
+        <!--    <resource>-->
+        <!--        &lt;!&ndash; directory：指定资源文件的位置 &ndash;&gt;-->
+        <!--        <directory>src/main/java</directory>-->
+        <!--        <includes>-->
+        <!--            &lt;!&ndash; “**” 表示任意级目录    “*”表示任意任意文件 &ndash;&gt;-->
+        <!--            &lt;!&ndash; mvn resources:resources　：对资源做出处理，先于compile阶段  &ndash;&gt;-->
+        <!--            <include>**/*.yaml</include>-->
+        <!--            <include>**/*.xml</include>-->
+        <!--        </includes>-->
+        <!--        &lt;!&ndash;  filtering：开启过滤，用指定的参数替换directory下的文件中的参数(eg. ${name}) &ndash;&gt;-->
+        <!--        <filtering>false</filtering>-->
+        <!--    </resource>-->
+        <!--    <resource>-->
+        <!--        <directory>src/main/resources</directory>-->
+        <!--    </resource>-->
+        <!--</resources>-->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <builder>paketobuildpacks/builder-jammy-base:latest</builder>
+                    </image>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!--自动生成mybatis-->
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
+                <!-- 数据库驱动 -->
+                <dependencies>
+                    <dependency>
+                        <groupId>com.mysql</groupId>
+                        <artifactId>mysql-connector-j</artifactId>
+                        <version>8.0.32</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <!--Mybatis generator 生成器配置文件-->
+                    <configurationFile>src/main/resources/mybatis-generator-config.xml</configurationFile>
+                    <!--允许覆盖新生成的文件-->
+                    <overwrite>true</overwrite>
+                    <!--将当前的pom依赖添加到生成器的类路径中-->
+                    <includeCompileDependencies>true</includeCompileDependencies>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

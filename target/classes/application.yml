@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  #mysql
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/movie
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  #thymeleaf
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+  #热部署
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      exclude:
+
+#mybatis
+mybatis:
+#  configuration:
+#    #驼峰命令启动
+#    map-underscore-to-camel-case: true
+  #映射对应实体
+  type-aliases-package: com.hhs.entity
+  mapper-locations: classpath:mapper/*.xml
+
+#pagehelper配置
+pagehelper:
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  helperDialect: mysql

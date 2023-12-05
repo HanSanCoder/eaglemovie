@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhs.mapper.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.hhs.entity.Comment">
+    <id column="comment_id" jdbcType="BIGINT" property="comment_id" />
+    <result column="user_id" jdbcType="BIGINT" property="user_id" />
+    <result column="comment_content" jdbcType="VARCHAR" property="comment_content" />
+    <result column="movie_id" jdbcType="BIGINT" property="movie_id" />
+    <result column="comment_time" jdbcType="TIMESTAMP" property="comment_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, user_id, comment_content, movie_id, comment_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </select>
+    <select id="findAllComments" resultType="com.hhs.entity.Comment">
+      select *
+      from comment
+    </select>
+
+  <select id="findCommentsByUserName" resultType="com.hhs.entity.Comment">
+    select comment.*
+    from user, comment
+    where comment.user_id = user.user_id and user.user_name = #{username}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from comment
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hhs.entity.Comment">
+    insert into comment (comment_id, user_id, comment_content, 
+      movie_id, comment_time)
+    values (#{commentId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{commentContent,jdbcType=VARCHAR}, 
+      #{movieId,jdbcType=BIGINT}, #{commentTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhs.entity.Comment">
+    insert into comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="comment_id != null">
+        comment_id,
+      </if>
+      <if test="user_id != null">
+        user_id,
+      </if>
+      <if test="comment_content != null">
+        comment_content,
+      </if>
+      <if test="movie_id != null">
+        movie_id,
+      </if>
+      <if test="comment_time != null">
+        comment_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="comment_id != null">
+        #{comment_id,jdbcType=BIGINT},
+      </if>
+      <if test="user_id != null">
+        #{user_id,jdbcType=BIGINT},
+      </if>
+      <if test="comment_content != null">
+        #{comment_content,jdbcType=VARCHAR},
+      </if>
+      <if test="movie_id != null">
+        #{movie_id,jdbcType=BIGINT},
+      </if>
+      <if test="comment_time != null">
+        #{comment_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhs.entity.Comment">
+    update comment
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="commentContent != null">
+        comment_content = #{commentContent,jdbcType=VARCHAR},
+      </if>
+      <if test="movieId != null">
+        movie_id = #{movieId,jdbcType=BIGINT},
+      </if>
+      <if test="commentTime != null">
+        comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhs.entity.Comment">
+    update comment
+    set user_id = #{userId,jdbcType=BIGINT},
+      comment_content = #{commentContent,jdbcType=VARCHAR},
+      movie_id = #{movieId,jdbcType=BIGINT},
+      comment_time = #{commentTime,jdbcType=TIMESTAMP}
+    where comment_id = #{commentId,jdbcType=BIGINT}
+  </update>
+</mapper>

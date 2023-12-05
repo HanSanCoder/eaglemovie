@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="layui/layui.js"></script>
+    <script src="js/jquery-3.7.1.js"></script>
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <title>鹰眼电影</title>
+</head>
+
+<body>
+<div th:fragment="footer">
+    <div class="footer">
+        <div>
+            <p>鹰眼电影网上购票系统</p>
+            <p>
+                友情链接：
+                <a href="https://maoyan.com" target="_blank" style="margin-right: 30px;">猫眼电影</a>
+                <span onclick="footerBtn()" style="height: 20px; cursor: pointer; border-left: 0px;">
+                    美女客服：
+                    <img src="../static/images/客服.jpg" style="width: 20px;" alt="">
+                </span>
+            </p>
+            <p>
+                组长：杨瑞敏
+                组员：何强 高文清 李润
+                <br>
+                前端：何强
+                后台：何汉叁 何汉贰
+                技术支持：何汉肆
+            </p>
+            <p>©2023 版权归小组所有</p>
+        </div>
+    </div>
+    <script>
+        //美女客服
+        function footerBtn() {
+            layui.use(function () {
+                var layer = layui.layer;
+                layer.open({
+                    type: 1,
+                    title: "美女客服",
+                    closeBtn: 0,
+                    shade: 0.8,
+                    area: '400px',
+                    offset: clientHeight / 20,
+                    id: 'LAY_layuipro',
+                    btn: ['确认', '取消'],
+                    yes: function () {
+                        layer.close(layer.index);
+                    },
+                    btnAlign: 'c',
+                    moveType: 0,
+                    content: "<div style=\"text-align:center; margin:20px 0 10px 0;\">" +
+                        "<img src=\"../static/images/美女客服.png\" style=\"width: 320px\">" +
+                        "</div>"
+                });
+            });
+        }
+    </script>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhs.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.hhs.entity.Order">
+    <id column="order_id" jdbcType="VARCHAR" property="order_id" />
+    <result column="user_id" jdbcType="BIGINT" property="user_id" />
+    <result column="schedule_id" jdbcType="BIGINT" property="schedule_id" />
+    <result column="order_position" jdbcType="VARCHAR" property="order_position" />
+    <result column="order_state" jdbcType="INTEGER" property="order_state" />
+    <result column="order_price" jdbcType="INTEGER" property="order_price" />
+    <result column="order_time" jdbcType="TIMESTAMP" property="order_time" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, user_id, schedule_id, order_position, order_state, order_price, order_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from orderinfo
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+    <select id="findOrderByScheduleId" resultType="com.hhs.entity.Order">
+      select *
+        from orderinfo
+        where schedule_id = #{schedule_id}
+    </select>
+    <select id="findOrderByUserName" resultType="com.hhs.entity.Order">
+      select orderinfo.*
+      from orderinfo, user
+      where user.user_name = #{username} and orderinfo.user_id = user.user_id order by order_time desc
+    </select>
+  <select id="findRefundOrderByUserName" resultType="com.hhs.entity.Order">
+    select orderinfo.*
+    from orderinfo, user
+    where user.user_name = #{username} and orderinfo.order_state = 0 and orderinfo.user_id = user.user_id order by order_time desc
+  </select>
+  <select id="findAllOrders" resultType="com.hhs.entity.Order">
+    select * from orderinfo order by order_time desc
+  </select>
+  <select id="findOrdersByState" resultType="com.hhs.entity.Order">
+    select *
+    from orderinfo
+    where order_state = #{order_state} order by order_time desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from orderinfo
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.hhs.entity.Order">
+    insert into orderinfo (order_id, user_id, schedule_id, 
+      order_position, order_state, order_price, 
+      order_time)
+    values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{scheduleId,jdbcType=BIGINT}, 
+      #{orderPosition,jdbcType=VARCHAR}, #{orderState,jdbcType=INTEGER}, #{orderPrice,jdbcType=INTEGER}, 
+      #{orderTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhs.entity.Order">
+    insert into orderinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="order_id != null">
+        order_id,
+      </if>
+      <if test="user_id != null">
+        user_id,
+      </if>
+      <if test="schedule_id != null">
+        schedule_id,
+      </if>
+      <if test="order_position != null">
+        order_position,
+      </if>
+      <if test="order_state != null">
+        order_state,
+      </if>
+      <if test="order_price != null">
+        order_price,
+      </if>
+      <if test="order_time != null">
+        order_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="order_id != null">
+        #{order_id,jdbcType=VARCHAR},
+      </if>
+      <if test="user_id != null">
+        #{user_id,jdbcType=BIGINT},
+      </if>
+      <if test="schedule_id != null">
+        #{schedule_id,jdbcType=BIGINT},
+      </if>
+      <if test="order_position != null">
+        #{order_position,jdbcType=VARCHAR},
+      </if>
+      <if test="order_state != null">
+        #{order_state,jdbcType=INTEGER},
+      </if>
+      <if test="order_price != null">
+        #{order_price,jdbcType=INTEGER},
+      </if>
+      <if test="order_time != null">
+        #{order_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhs.entity.Order">
+    update orderinfo
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="scheduleId != null">
+        schedule_id = #{scheduleId,jdbcType=BIGINT},
+      </if>
+      <if test="orderPosition != null">
+        order_position = #{orderPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="orderState != null">
+        order_state = #{orderState,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        order_price = #{orderPrice,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null">
+        order_time = #{orderTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhs.entity.Order">
+    update orderinfo
+    set user_id = #{userId,jdbcType=BIGINT},
+      schedule_id = #{scheduleId,jdbcType=BIGINT},
+      order_position = #{orderPosition,jdbcType=VARCHAR},
+      order_state = #{orderState,jdbcType=INTEGER},
+      order_price = #{orderPrice,jdbcType=INTEGER},
+      order_time = #{orderTime,jdbcType=TIMESTAMP}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateOrderStateToRefund">
+    update orderinfo set order_state = 0 where order_id = #{order_id}
+  </update>
+  <update id="updateOrderStateToRefunded">
+    update orderinfo set order_state = 2 where order_id = #{order_id}
+  </update>
+</mapper>

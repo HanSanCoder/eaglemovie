@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org" xmlns:http="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="js/jquery-3.7.1.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="layui/layui.js"></script>
+    <link rel="icon" type="image/x-icon" href="images/logo.ico" />
+    <link href="css/login.css" rel="stylesheet">
+
+    <title>鹰眼电影-登录注册</title>
+</head>
+
+<body>
+
+    <!-- ------------------------------------------------------------------- -->
+    <div class="screen">
+        <img class="big_logo"><br />
+        <label class="title">鹰 眼 电 影</label><br />
+        <label class="ineer_one">回首向来风雨茶香里</label><br />
+        <label class="ineer_two">眸中一点可是思念谁</label>
+    </div>
+    <!-- 登录页 -->
+    <div class="content" style="float: left;">
+        <ul class="tab">
+            <li class="login">登录</li>
+            <li class="register">注册</li>
+        </ul>
+        <div class="page">
+            <!-- 登录界面 -->
+            <div class="childpage" style="display: block">
+                <div>
+                    <label class="login_title">用户登录</label><br />
+                </div>
+                <div class="login_page">
+                    <div>
+                        <label>帐号</label><br />
+                        <input id="username" type="text" />
+                    </div>
+                    <div>
+                        <label>密码</label><br />
+                        <input id="password" type="password" />
+                    </div>
+                </div>
+                <div class="lo_error">
+                    <label class="login_error"></label>
+                </div>
+                <div>
+                    <input type="button" value="登录" class="btn btn-success login_btn" onclick="loginbtn()" />
+                </div>
+                <div>
+                    <label class="login_version">@版权所有HanSanCoder</label>
+                </div>
+            </div>
+            <!-- 注册界面 -->
+            <div class="childpage" style="display: none">
+                <div>
+                    <label class="register_title">用户注册</label><br />
+                </div>
+                <div class="register_page">
+                    <div>
+                        <label>帐号</label><br />
+                        <input id="username" type="text" />
+                    </div>
+                    <div>
+                        <label>密码</label><br />
+                        <input id="password" type="password" />
+                    </div>
+                    <div>
+                        <label>邮箱</label><br />
+                        <input id="email" type="text" />
+                    </div>
+                    <div>
+                        <label>验证码</label><br />
+                        <input id="test" type="text" />
+                        <input id="testNum" type="button" />
+                    </div>
+                </div>
+                <div class="re_error">
+                    <label class="register_error"></label>
+                </div>
+                <div>
+                    <input type="button" value="注册" class="btn btn-warning register_btn" onclick="registerbtn()" />
+                </div>
+                <div>
+                    <!-- <label class="register_version">@版权所有HanSanCoder</label> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ------------------------------------------------------------------- -->
+    <script>
+        var url = "http://localhost:8080";
+        //初始化
+        $(window).on('load', function () {
+            initWindow(); //初始化登录框位置
+            initLogin(); //初始化登录界面
+        });
+
+        //初始化登录框位置（垂直居中、水平4/7）
+        function initWindow() {
+            let middle = 3;
+            let colorNum = 200;
+            let clientHeight = $(window).height();
+            let clientWidth = $(window).width();
+            let content = $('.content');
+            let screen = $('.screen');
+            let title = $('.title');
+            let bodys = $('body');
+            bodys.css("cssText", `background-size: ${clientWidth}px auto;`);
+            content.css("cssText", `margin: ${(clientHeight - content.height()) / 2}px ${clientWidth * 4 / 7}px 
+                ${(clientHeight - content.height()) / 2}px;`);
+            screen.css("cssText", `margin: ${(content.height() - screen.height()) / 2}px ${(clientWidth * 4 / 7 - screen.width()) / 2}px 
+                ${(content.height() - screen.height()) / 2}px;`);
+            setInterval(function () {
+                colorNum += middle;
+                if (colorNum > 185) {
+                    middle = -3;
+                } else if (colorNum < 80) {
+                    middle = 3;
+                }
+                title.css("color", `rgb(255, ${colorNum}, 0)`);
+            }, 30);
+        }
+
+        //初始化登录界面
+        function initLogin() {
+            let testNum = $('#testNum');
+            let liArr = $('li');
+            let divArr = $('.childpage');
+            testNum.onclick = function () {
+                testNum.val(TestNum());
+            };
+            liArr.each(function (index) {
+                $(this).on('click', function () {
+                    testNum.val(TestNum());
+
+                    liArr.css('background-color', 'rgba(255, 255, 255, 0.2)');
+                    divArr.css('display', 'none');
+
+                    $(this).css('background-color', 'rgba(255, 255, 255, 0)');
+                    divArr.eq(index).css('display', 'block');
+                });
+            });
+        }
+
+        //更新验证码
+        function TestNum() {
+            var testNum = "";
+            var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+                'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+            for (var i = 0; i < 4; i++) {
+                var charIndex = Math.floor(Math.random() * 36);
+                testNum += selectChar[charIndex];
+            }
+            return testNum;
+        }
+
+        //登录账号和密码信息验证
+        function loginbtn() {
+            var user_name = $(".login_page").find("#username").val();
+            var user_pwd = $(".login_page").find("#password").val();
+            var login_error = $(".login_error");
+            if ((user_name == "") || (user_pwd == "")) {
+                login_error.text("账号和密码不能为空");
+            }
+            else {
+                login_error.text("");
+                $.ajax({
+                    type: "post",
+                    url: url + "/user/login",
+                    data: {
+                        user_name: user_name,
+                        user_pwd: user_pwd
+                    },
+                    dataType: "json",
+                    success: function (obj) {
+                        if (obj.msg == "fail") {
+                            // sessionStorage.removeItem('userJson');
+                            login_error.text('账号或密码错误!');
+                        }
+                        else {
+                            localStorage.setItem("userJson", JSON.stringify(obj.data));
+                            // sessionStorage.set
+                            window.location.href = "./mainPage";
+                        }
+                    },
+                    error: function () {
+                        alert("Network error")
+                    }
+                });
+            }
+        }
+
+        //注册账号和密码逻信息验证
+        function registerbtn() {
+            var textNum = $('#testNum');
+            var user_name = $(".register_page").find("#username").val();
+            var user_pwd = $(".register_page").find("#password").val();
+            var user_email = $(".register_page").find("#email").val();
+            var register_error = $(".register_error");
+            var test = $("#test").val();
+            var testbtn = $("#testNum").val();
+            if ((user_name == "") || (user_pwd == "") || (user_email == "")) {
+                register_error.text("账号和密码和邮箱不能为空");
+                textNum.value = TestNum();
+            }
+            else if ((test == "") || test != testbtn) {
+                register_error.text("验证码错误");
+                textNum.value = TestNum();
+            }
+            else {
+                register_error.text("");
+                $.ajax({
+                    type: "post",
+                    url: url + "/user/register",
+                    data: {
+                        user_name: user_name,
+                        user_pwd: user_pwd,
+                        user_email: user_email
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data == "success") {
+                            window.alert("注册成功！");
+                            window.location.href = "./login";
+                        } else {
+                            register_error.text('该账号已被注册!');
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+    <!-- ------------------------------------------------------------------- -->
+</body>
+
+</html>

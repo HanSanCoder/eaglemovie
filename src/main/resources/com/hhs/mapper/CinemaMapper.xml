@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhs.mapper.CinemaMapper">
+  <resultMap id="BaseResultMap" type="com.hhs.entity.Cinema">
+    <id column="cinema_id" jdbcType="BIGINT" property="cinema_id" />
+    <result column="cinema_name" jdbcType="VARCHAR" property="cinema_name" />
+    <result column="cinema_address" jdbcType="VARCHAR" property="cinema_address" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    cinema_id, cinema_name, cinema_address
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cinema
+    where cinema_id = #{cinemaId,jdbcType=BIGINT}
+  </select>
+    <select id="findAllCinema" resultType="com.hhs.entity.Cinema">
+        select *
+        from cinema
+    </select>
+
+  <select id="findCinemaByMovieId" resultType="com.hhs.entity.Cinema">
+    select distinct cinema.* from hall,schedule,cinema
+    where hall.hall_id=schedule.hall_id and hall.cinema_id=cinema.cinema_id and schedule.movie_id = #{movie_id}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from cinema
+    where cinema_id = #{cinemaId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hhs.entity.Cinema">
+    insert into cinema (cinema_id, cinema_name, cinema_address
+      )
+    values (#{cinemaId,jdbcType=BIGINT}, #{cinemaName,jdbcType=VARCHAR}, #{cinemaAddress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhs.entity.Cinema">
+    insert into cinema
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cinema_id != null">
+        cinema_id,
+      </if>
+      <if test="cinema_name != null">
+        cinema_name,
+      </if>
+      <if test="cinema_address != null">
+        cinema_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cinemaId != null">
+        #{cinema_id},
+      </if>
+      <if test="cinema_name != null">
+        #{cinema_name,jdbcType=VARCHAR},
+      </if>
+      <if test="cinema_address != null">
+        #{cinema_address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhs.entity.Cinema">
+    update cinema
+    <set>
+      <if test="cinema_name != null">
+        cinema_name = #{cinemaName,jdbcType=VARCHAR},
+      </if>
+      <if test="cinemaAddress != null">
+        cinema_address = #{cinemaAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cinema_id = #{cinemaId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhs.entity.Cinema">
+    update cinema
+    set cinema_name = #{cinemaName,jdbcType=VARCHAR},
+      cinema_address = #{cinemaAddress,jdbcType=VARCHAR}
+    where cinema_id = #{cinemaId,jdbcType=BIGINT}
+  </update>
+</mapper>

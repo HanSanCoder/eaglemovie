@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hhs.mapper.HallMapper">
+  <resultMap id="BaseResultMap" type="com.hhs.entity.Hall">
+    <id column="hall_id" jdbcType="BIGINT" property="hall_id" />
+    <result column="hall_name" jdbcType="VARCHAR" property="hall_name" />
+    <result column="hall_capacity" jdbcType="INTEGER" property="hall_capacity" />
+    <result column="cinema_id" jdbcType="BIGINT" property="cinema_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    hall_id, hall_name, hall_capacity, cinema_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hall
+    where hall_id = #{hallId,jdbcType=BIGINT}
+  </select>
+    <select id="findHallByCinemaId" parameterType="java.lang.Long" resultType="com.hhs.entity.Hall">
+      select *
+      from hall
+      where cinema_id = #{cinema_id}
+    </select>
+    <select id="findHallByCinemaAndHallName" resultType="com.hhs.entity.Hall">
+      select hall.*
+      from hall, cinema
+      where hall.cinema_id = cinema.cinema_id
+      and hall_name = #{hall_name} and cinema_name = #{cinema_name}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from hall
+    where hall_id = #{hallId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hhs.entity.Hall">
+    insert into hall (hall_id, hall_name, hall_capacity, 
+      cinema_id)
+    values (#{hallId,jdbcType=BIGINT}, #{hallName,jdbcType=VARCHAR}, #{hallCapacity,jdbcType=INTEGER}, 
+      #{cinemaId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hhs.entity.Hall">
+    insert into hall
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="hall_id != null">
+        hall_id,
+      </if>
+      <if test="hall_name != null">
+        hall_name,
+      </if>
+      <if test="hall_capacity != null">
+        hall_capacity,
+      </if>
+      <if test="cinema_id != null">
+        cinema_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="hall_id != null">
+        #{hall_id,jdbcType=BIGINT},
+      </if>
+      <if test="hall_name != null">
+        #{hall_name,jdbcType=VARCHAR},
+      </if>
+      <if test="hall_capacity != null">
+        #{hall_capacity,jdbcType=INTEGER},
+      </if>
+      <if test="cinema_id != null">
+        #{cinema_id,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hhs.entity.Hall">
+    update hall
+    <set>
+      <if test="hallName != null">
+        hall_name = #{hallName,jdbcType=VARCHAR},
+      </if>
+      <if test="hallCapacity != null">
+        hall_capacity = #{hallCapacity,jdbcType=INTEGER},
+      </if>
+      <if test="cinemaId != null">
+        cinema_id = #{cinemaId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where hall_id = #{hallId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hhs.entity.Hall">
+    update hall
+    set hall_name = #{hallName,jdbcType=VARCHAR},
+      hall_capacity = #{hallCapacity,jdbcType=INTEGER},
+      cinema_id = #{cinemaId,jdbcType=BIGINT}
+    where hall_id = #{hallId,jdbcType=BIGINT}
+  </update>
+</mapper>
